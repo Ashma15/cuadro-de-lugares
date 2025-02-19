@@ -12,38 +12,75 @@
       padding: 0;
       background-color: #f4f4f4;
     }
-    #map {
-      height: 400px;
-      width: 100%;
-    }
+    
     .container {
       padding: 20px;
     }
+
     .header {
       text-align: center;
       margin-bottom: 20px;
     }
+
+    #map {
+      height: 400px;
+      width: 100%;
+      margin-bottom: 20px; /* Separación entre mapa y la tabla */
+    }
+
     .table-container {
       margin-top: 20px;
       overflow-x: auto;
       border-radius: 5px;
       border: 1px solid #ddd;
+      margin-bottom: 20px; /* Separación entre tabla y el footer o elementos restantes */
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
     }
+
     th, td {
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
     }
+
     th {
       background-color: #4CAF50;
       color: white;
     }
+
     tr:hover {
       background-color: #f1f1f1;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      width: 300px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
@@ -57,8 +94,10 @@
       <button onclick="searchPlaces()">Buscar Lugares Cercanos</button>
     </div>
 
+    <!-- Mapa -->
     <div id="map"></div>
 
+    <!-- Tabla de Lugares Cercanos -->
     <div class="table-container">
       <table id="placesTable">
         <thead>
@@ -71,6 +110,10 @@
           <!-- Los resultados se llenarán aquí -->
         </tbody>
       </table>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 Mapa de Lugares Cercanos. Todos los derechos reservados.</p>
     </div>
   </div>
 
