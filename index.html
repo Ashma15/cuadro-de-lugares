@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Información de Lugares Cercanos</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+    .container {
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .table-container {
+      margin-top: 20px;
+      overflow-x: auto;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Buscar Lugares Cercanos</h1>
+      <p>Introduce una ubicación para encontrar lugares cercanos como restaurantes, museos, parques, etc.</p>
+      <input type="text" id="searchInput" placeholder="Escribe una ciudad o dirección" />
+      <button onclick="searchPlaces()">Buscar Lugares Cercanos</button>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="table-container">
+      <table id="placesTable">
+        <thead>
+          <tr>
+            <th>Lugar</th>
+            <th>Dirección</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Los resultados se llenarán aquí -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = '5488f9d2a11f40b0a2ccb77f3b594f84'; // Tu API Key de OpenCage
+
+    let map;
+
+    // Inicializar el mapa con una vista por defecto
+    function initMap(lat = 4.7110, lng = -74.0721) { // Bogotá por defecto
+      map = L.map('map').setView([lat, lng], 12);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+    }
+
+    // Función para buscar lugares cercanos
+    async function searchPlaces() {
+      const location = document.getElementById('searchInput').value;
+
+      if (!location) {
+        alert('Por favor, ingresa una ubicación.');
+        return;
+      }
+
+      // Obtener coordenadas de la ubicación usando OpenCage
+      const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=${apiKey}`;
+      const response = await fetch(geocodeUrl);
+      const data = await response.json();
+
+      if (data.results.length === 0) {
+        alert('No se encontraron resultados para esa ubicación.');
+        return;
+      }
+
+      const { lat, lng } = data.results[0].geometry;
+
+      // Actualizar el mapa con las coordenadas obtenidas
+      map.setView([lat, lng], 14);
+
+      // Llamar a la función para buscar lugares cercanos
+      fetchNearbyPlaces(lat, lng);
+    }
+
+    // Función para obtener lugares cercanos usando OpenCage y mostrarlos en la tabla
+    async function fetchNearbyPlaces(lat, lng) {
+      const placesUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lng}&key=${apiKey}&radius=5000`; // Radio de 5km
+      const response = await fetch(placesUrl);
+      const data = await response.json();
+
+      const placesTableBody = document.getElementById('placesTable').getElementsByTagName('tbody')[0];
+      placesTableBody.innerHTML = ''; // Limpiar resultados anteriores
+
+      data.results.forEach(place => {
+        const name = place.formatted;
+        const address = place.address || 'Sin dirección';
+
+        // Agregar los lugares encontrados a la tabla
+        const row = placesTableBody.insertRow();
+        row.insertCell(0).textContent = name;
+        row.insertCell(1).textContent = address;
+      });
+    }
+
+    // Inicializar el mapa al cargar la página
+    window.onload = function() {
+      initMap(); // Cargar el mapa con las coordenadas de Bogotá
+    };
+  </script>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+</html>
