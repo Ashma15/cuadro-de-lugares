@@ -12,7 +12,7 @@
       padding: 0;
       background-color: #f4f4f4;
     }
-    
+
     .container {
       padding: 20px;
     }
@@ -25,7 +25,12 @@
     #map {
       height: 400px;
       width: 100%;
-      margin-bottom: 20px; /* Separación entre mapa y la tabla */
+      margin-bottom: 30px; /* Aumentamos la separación entre el mapa y la tabla */
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     .table-container {
@@ -33,7 +38,6 @@
       overflow-x: auto;
       border-radius: 5px;
       border: 1px solid #ddd;
-      margin-bottom: 20px; /* Separación entre tabla y el footer o elementos restantes */
     }
 
     table {
@@ -60,10 +64,11 @@
       text-align: center;
       font-size: 14px;
       color: #888;
+      margin-top: 30px;
     }
 
     input[type="text"] {
-      padding: 8px;
+      padding: 10px;
       width: 300px;
       margin: 10px 0;
       border: 1px solid #ccc;
@@ -71,7 +76,7 @@
     }
 
     button {
-      padding: 8px 16px;
+      padding: 10px 20px;
       background-color: #4CAF50;
       color: white;
       border: none;
@@ -90,6 +95,10 @@
     <div class="header">
       <h1>Buscar Lugares Cercanos</h1>
       <p>Introduce una ubicación para encontrar lugares cercanos como restaurantes, museos, parques, etc.</p>
+    </div>
+
+    <!-- Contenedor de búsqueda -->
+    <div class="search-container">
       <input type="text" id="searchInput" placeholder="Escribe una ciudad o dirección" />
       <button onclick="searchPlaces()">Buscar Lugares Cercanos</button>
     </div>
